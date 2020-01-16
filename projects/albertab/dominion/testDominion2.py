@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan 15 4:18
+Created on Tue Oct 13 15:42:42 2015
 
 @author: Bryce Albertazzi
 """
@@ -10,20 +10,12 @@ import random
 from collections import defaultdict
 import testUtility
 
-#Get player names
-player_names = ["Annie","*Ben","*Carla"]
 
-#number of curses and victory cards
-if len(player_names)>2:
-    nV=12
-else:
-    nV=8
-nC = -10 + 10 * len(player_names)
 
 #Define box
-box = testUtility.GetBoxes
+box = testUtility.GetBoxes()
 
-supply_order = testUtility.GetSupplyOrder
+supply_order = testUtility.GetSupplyOrder()
 
 #Pick 10 cards from box to be in the supply.
 boxlist = [k for k in box]
@@ -32,27 +24,14 @@ random10 = boxlist[:10]
 supply = defaultdict(list,[(k,box[k]) for k in random10])
 
 
-#The supply always has these cards
-supply["Copper"]=[Dominion.Copper()]*(60-len(player_names)*7)
-supply["Silver"]=[Dominion.Silver()]*40
-supply["Gold"]=[Dominion.Gold()]*30
-supply["Estate"]=[Dominion.Estate()]*nV
-supply["Duchy"]=[Dominion.Duchy()]*nV
-supply["Province"]=[Dominion.Province()]*nV
-supply["Curse"]=[Dominion.Curse()]*nC
+#Give the supply its designated cards
+testUtility.SetSupply(supply)
 
 #initialize the trash
 trash = []
 
 #Costruct the Player objects
-players = []
-for name in player_names:
-    if name[0]=="*":
-        players.append(Dominion.ComputerPlayer(name[1:]))
-    elif name[0]=="^":
-        players.append(Dominion.TablePlayer(name[1:]))
-    else:
-        players.append(Dominion.Player(name))
+players = testUtility.ConstructPlayerObjects()
 
 #Play the game
 turn  = 0
@@ -77,7 +56,11 @@ while not Dominion.gameover(supply):
 #Final score
 dcs=Dominion.cardsummaries(players)
 vp=dcs.loc['VICTORY POINTS']
-vpmax=vp.max()
+
+#######Test 2 Bug################
+vpmax=vp.min() #Should be vpmax= vp.max()
+#################################
+
 winners=[]
 for i in vp.index:
     if vp.loc[i]==vpmax:
