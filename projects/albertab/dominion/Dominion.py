@@ -421,7 +421,7 @@ class Player():
                 buy_string += "s"
             buy_string += "."
             print( buy_string)
-            purchase = input("What would you like to purchase?  -Hit enter for no purchase.-\n--> ")
+            purchase = raw_input("What would you like to purchase?  -Hit enter for no purchase.-\n--> ")
             if not purchase:
                 break
             else:
