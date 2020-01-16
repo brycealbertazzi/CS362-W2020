@@ -8,7 +8,7 @@ import random
 from collections import Counter, OrderedDict
 from operator import itemgetter
 import re
-#import pandas
+import pandas
 
 class Card():
     def __init__(self,name,category,cost,buypower,vpoints):
@@ -421,7 +421,7 @@ class Player():
                 buy_string += "s"
             buy_string += "."
             print( buy_string)
-            purchase = raw_input("What would you like to purchase?  -Hit enter for no purchase.-\n--> ")
+            purchase = input("What would you like to purchase?  -Hit enter for no purchase.-\n--> ")
             if not purchase:
                 break
             else:
